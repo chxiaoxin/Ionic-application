@@ -1,0 +1,8 @@
+{
+    "jscodehints.detectedExclusions": [
+        "/home/lixin/version-control/Ionic-application/www/lib/ionic/js/angular-ui/angular-ui-router.js",
+        "/home/lixin/version-control/Ionic-application/www/lib/ionic/js/angular-ui/angular-ui-router.min.js",
+        "/home/lixin/version-control/Ionic-application/www/lib/ionic/js/angular/angular-sanitize.min.js",
+        "/home/lixin/version-control/Ionic-application/www/lib/ionic/js/angular/angular-resource.min.js"
+    ]
+}
