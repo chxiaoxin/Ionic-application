@@ -1,5 +1,16 @@
 <ion-view view-title="Home">
   <ion-content>
-    <h1>Home</h1>
+    <div class="card">
+        <div class="item item-divider">
+            Our Creations
+            <span class="badge badge-assertive">  {{dish_outline.label}}</span>
+        </div>
+        <div class="item item-thumbnail-left item-text-wrap">
+            <img ng-src="{{baseURL+dish_outline.image}}" alt="Uthappizza">
+            <h2>{{dish_outline.name}}
+             <span class="badge">{{dish_outline.price | currency}}</span></h2>
+            <p>{{dish_outline.description}}</p>
+        </div>
+    </div>
   </ion-content>
 </ion-view>
