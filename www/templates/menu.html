@@ -1,5 +1,21 @@
 <ion-view view-title="Menu">
+    <div class='tabs-striped tabs-color-calm'>
+        <ul class="tabs">
+        <li ng-class="{active:isSelected(1)}" class='tab-item'><a role='tab' ng-click="select(1)" >Menu</a></li>
+        <li ng-class="{active:isSelected(2)}" class='tab-item'><a role="tab" ng-click="select(2)" >Mains</a></li>  
+        <li ng-class="{active:isSelected(3)}" class='tab-item'><a role='tab' ng-click="select(3)" >Appetizer</a></li>
+        <li ng-class="{active:isSelected(4)}" class='tab-item'><a role='tab' ng-click="select(4)" >Dessert</a></li>      
+        </ul>
+    </div>
   <ion-content>
-    <h1>Menu</h1>
+      <ion-list>
+          <ion-item ng-repeat='dish in dishes | filter:filterText' href='#/app/menu/{{dish.id}}' class='item-thumbnail-left'>
+            <img ng-src="{{baseURL+dish.image}}" alt="picture">
+            <h2>{{dish.name}}    
+            <span>{{dish.price | currency}}</span>
+            </h2>
+            <p>{{dish.description}}</p>
+          </ion-item>
+      </ion-list>
   </ion-content>
 </ion-view>

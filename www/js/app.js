@@ -63,7 +63,7 @@ angular.module('firstApp', ['ionic', 'firstApp.controllers','firstApp.services']
       views: {
         'menuContent': {
           templateUrl: 'templates/menu.html',
-          controller: ''
+          controller: 'MenuController'
         }
       }
     })
@@ -73,7 +73,7 @@ angular.module('firstApp', ['ionic', 'firstApp.controllers','firstApp.services']
     views: {
       'menuContent': {
         templateUrl: 'templates/dishdetails.html',
-        controller: ''
+        controller: 'dishDetailController'
       }
     }
   });

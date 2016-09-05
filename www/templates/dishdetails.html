@@ -1,9 +1,29 @@
 <ion-view view-title="Dish Details">
   <ion-content>
-    <ion-list>
-      <ion-item ng-repeat="dish in dishes" href="#/app/menu/{{dish.id}}">
-        {{dish.name}}
-      </ion-item>
-    </ion-list>
+   <div class="card">
+        <div class="item item-divider">
+            Our Creations
+            <span class="badge badge-assertive">  {{dish.label}}</span>
+        </div>
+        <div class="item item-thumbnail-left item-text-wrap" >
+            <img class='full-image' ng-src="{{baseURL+dish.image}}" alt="picture">
+            <h2>{{dish.name}}
+            <span>{{dish.price | currency}}</span></h2>
+            <p>{{dish.description}}</p>
+        </div>
+    </div>
+    <div class='row'>  
+    <div class="col-offset-10">
+    <label>Custom Comments</label>
+        <small>&nbsp;sort by</small>
+        <input type="txt" ng-keypress='passVal()' ng-model="test.val">
+        <div ng-repeat="Comment in dish.comments | orderBy:criteria" >
+            <blockquote>Star {{Comment.rating}}<br>{{Comment.comment}}
+                <footer><cite>{{Comment.date}} {{Comment.author}}</cite></footer>
+            </blockquote>
+        </div>
+    </div>
+    </div>    
   </ion-content>
+
 </ion-view>

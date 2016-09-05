@@ -40,13 +40,14 @@ angular.module('firstApp.controllers', ['ngResource'])
     }, 1000);
   };
 })
-.controller("MenuController",['$scope','menuFactory',function($scope,menuFactory){
+.controller("MenuController",['$scope','menuFactory','baseURL',function($scope,menuFactory,baseURL){
+           $scope.baseURL=baseURL;
            $scope.filterText="";
            $scope.showDetails=false;
            $scope.setTab=1;
            $scope.showMenu=false;
            $scope.message='loading...';
-           $scope.dishes=menuFactory.getdishes().query(
+           $scope.dishes=menuFactory.getDishes().query(
                function(response){
                    $scope.dishes=response;
                    $scope.showMenu=true;
@@ -107,12 +108,13 @@ angular.module('firstApp.controllers', ['ngResource'])
                                   };
 }])
 
-.controller('dishDetailController',['$scope','menuFactory','$stateParams',function($scope,menuFactory,$stateParams){
+.controller('dishDetailController',['$scope','menuFactory','$stateParams','baseURL',function($scope,menuFactory,$stateParams,baseURL){
+            $scope.baseURL=baseURL;
             $scope.test={};
             $scope.criteria;
             $scope.showDish=false;
             $scope.message='Loading...';
-            $scope.dish=menuFactory.getdishes().get({id:parseInt($stateParams.id,10)})
+            $scope.dish=menuFactory.getDishes().get({id:parseInt($stateParams.id,10)})
             .$promise.then(function(response){
                    $scope.dish=response;
                    $scope.showDish=true;
@@ -165,7 +167,7 @@ angular.module('firstApp.controllers', ['ngResource'])
     $scope.baseURL=baseURL;
     $scope.showIndex=false;
     $scope.message='Loading...'
-    $scope.dish_outline=menuFactory.getDishes().get({id:0}).$promise.then(
+    $scope.dish_outline=menuFactory.getDishes().get({id:1}).$promise.then(
         function(response){
                    $scope.dish_outline=response;
                    $scope.showIndex=true;
