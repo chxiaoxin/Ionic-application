@@ -26,16 +26,14 @@ angular.module('firstApp.services',['ngResource'])
                 // that returns a selected promotion.
                 this.getPromotion = function() {
                     return   $resource(baseURL+"promotions/:id");;
-                }
-    
-                        
+                }             
         }])
 
-        .factory('corporateFactory', ['$resource', 'baseURL', function($resource,baseURL) {
-    
-    
+        .service('corporateFactory', ['$resource', 'baseURL', function($resource,baseURL) {
+            this.getLeaderInfo=function(){
+                return $resource(baseURL+"leadership/:id",null,{'query':{method:'GET',isArray:true}});
+            }
             return $resource(baseURL+"leadership/:id");
-    
         }])
 
         .factory('feedbackFactory', ['$resource', 'baseURL', function($resource,baseURL) {

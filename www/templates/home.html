@@ -2,7 +2,7 @@
     <ion-content>
     <div class="card">
         <div class="item item-divider">
-            Our Creations
+            New
             <span class="badge badge-assertive">  {{dish_outline.label}}</span>
         </div>
         <div class="item item-thumbnail-left item-text-wrap" >
@@ -10,6 +10,30 @@
             <h2>{{dish_outline.name}}
             <span>{{dish_outline.price | currency}}</span></h2>
             <p>{{dish_outline.description}}</p>
+        </div>
+    </div>
+    <div class="card">
+        <div class="item item-divider">
+            Promotion
+            <span class="badge badge-assertive">  {{promotion.label}}</span>
+        </div>
+        <div class="item item-thumbnail-left item-text-wrap" >
+            <img ng-src="{{baseURL+promotion.image}}" alt="picture">
+            <h2>{{promotion.name}}
+            <span>{{promotion.price | currency}}</span></h2>
+            <p>{{promotion.description}}</p>
+        </div>
+    </div>
+    <div class="card">
+        <div class="item item-divider">
+            Leadersihp
+            <span class="badge badge-assertive">  {{leadership.designation}}</span>
+        </div>
+        <div class="item item-thumbnail-left item-text-wrap" >
+            <img ng-src="{{baseURL+leadership.image}}" alt="picture">
+            <h2>{{leadership.name}}
+            <span>{{leadership.abbr}}</span></h2>
+            <p>{{leadership.description}}</p>
         </div>
     </div>
   </ion-content>

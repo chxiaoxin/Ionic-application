@@ -46,7 +46,8 @@ angular.module('firstApp', ['ionic', 'firstApp.controllers','firstApp.services']
       url: '/aboutus',
       views: {
         'menuContent': {
-          templateUrl: 'templates/aboutus.html'
+          templateUrl: 'templates/aboutus.html',
+          controller:'AboutController'
         }
       }
     })

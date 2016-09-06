@@ -1,5 +1,15 @@
 <ion-view view-title="About Us">
   <ion-content>
-    <h1>About Us</h1>
+    <ul class="list">
+        <div class='item item-divider'>Corporate Leadership</div>
+        <li class="item" ng-repeat='leader in leader_outline'>
+        <div class='item item-thumbnail-left item-text-wrap'>
+        <img ng-src="{{baseURL+leader.image}}"> 
+            <h2>{{leader.designation}}</h2>
+            <p>{{leader.description}}</p>
+        </div>
+        
+        </li>
+    </ul>
   </ion-content>
 </ion-view>

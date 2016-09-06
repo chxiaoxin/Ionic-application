@@ -163,7 +163,7 @@ angular.module('firstApp.controllers', ['ngResource'])
         }
     };
 }])
-.controller('IndexController',['baseURL','$scope','menuFactory',function(baseURL,$scope,menuFactory){
+.controller('IndexController',['baseURL','$scope','menuFactory','corporateFactory',function(baseURL,$scope,menuFactory,corporateFactory){
     $scope.baseURL=baseURL;
     $scope.showIndex=false;
     $scope.message='Loading...'
@@ -175,8 +175,30 @@ angular.module('firstApp.controllers', ['ngResource'])
         function(response){
                    $scope.message='Error'+response.status+response.statusText;
                });
+    $scope.promotion=menuFactory.getPromotion().get({id:0}).$promise.then(
+        function(response){
+                   $scope.promotion=response;
+                   $scope.showIndex=true;
+               },
+        function(response){
+                   $scope.message='Error'+response.status+response.statusText;
+});
+    $scope.leadership=corporateFactory.get({id:0}).$promise.then(
+        function(response){
+                   $scope.leadership=response;
+                   $scope.showIndex=true;
+               },
+        function(response){
+                   $scope.message='Error'+response.status+response.statusText;
+});
 }])
-.controller('AboutController',['$scope','corFactory',function($scope,corFactory){
-    $scope.leader_outline=corFactory.getLeaderInfo();
+.controller('AboutController',['$scope','corporateFactory','baseURL',function($scope,corporateFactory,baseURL){
+    $scope.baseURL=baseURL;
+    $scope.leader_outline=corporateFactory.query().$promise.then(
+               function(response){
+                   $scope.leader_outline=response;
+               },function(response){
+                   $scope.message='Error'+response.status+response.statusText;
+               });
 }])
 ;
