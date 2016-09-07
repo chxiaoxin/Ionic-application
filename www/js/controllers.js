@@ -39,6 +39,25 @@ angular.module('firstApp.controllers', ['ngResource'])
       $scope.closeLogin();
     }, 1000);
   };
+    $scope.reservation={};
+    
+    $ionicModal.fromTemplateUrl('templates/reservetable.html',{scope:$scope}).then(function(modal){$scope.reserveform=modal;});
+    
+    $scope.closeReserve=function(){
+        $scope.reserveform.hide();
+    };
+    
+    $scope.reserve=function(){
+        $scope.reserveform.show();
+        };
+    
+    $scope.doReserve=function(){
+        console.log('Reserving',$scope.reservation);
+    };
+    
+     $timeout(function() {
+      $scope.closeReserve();
+    }, 1000);
 })
 .controller("MenuController",['$scope','menuFactory','baseURL',function($scope,menuFactory,baseURL){
            $scope.baseURL=baseURL;
