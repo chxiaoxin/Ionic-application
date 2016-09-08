@@ -68,7 +68,15 @@ angular.module('firstApp', ['ionic', 'firstApp.controllers','firstApp.services']
         }
       }
     })
-
+  .state('app.favorite',{
+      url:'/favorite',
+      views:{
+          'menuContent':{
+              templateUrl:'templates/favorite.html',
+              controller:'FavoriteController'
+          }
+      }
+  })
   .state('app.dishdetail', {
     url: '/menu/:id',
     views: {

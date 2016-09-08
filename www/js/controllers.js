@@ -59,7 +59,7 @@ angular.module('firstApp.controllers', ['ngResource'])
       $scope.closeReserve();
     }, 1000);
 })
-.controller("MenuController",['$scope','menuFactory','baseURL',function($scope,menuFactory,baseURL){
+.controller("MenuController",['$scope','menuFactory','baseURL','favoriteFactory','$ionicListDelegate',function($scope,menuFactory,baseURL,favoriteFactory,$ionicListDelegate){
            $scope.baseURL=baseURL;
            $scope.filterText="";
            $scope.showDetails=false;
@@ -97,6 +97,10 @@ angular.module('firstApp.controllers', ['ngResource'])
             };
             $scope.isSelected=function(setTab){
                 return $scope.setTab===setTab;
+            };
+            $scope.addFavorite=function(index){
+                favoriteFactory.addToFavorite(index);
+                $ionicListDelegate.closeOptionButtons();
             };
         }])
 .controller('ContactController',['$scope',function($scope){
@@ -220,4 +224,37 @@ angular.module('firstApp.controllers', ['ngResource'])
                    $scope.message='Error'+response.status+response.statusText;
                });
 }])
+.controller('FavoriteController',['$scope','baseURL','favoriteFactory','menuFactory','$ionicListDelegate',function($scope,baseURL,favoriteFactory,menuFactory,$ionicListDelegate){
+    $scope.baseURL=baseURL;
+    $scope.shouldshow=false;
+    $scope.favorite=favoriteFactory.getAllFavorite();
+    $scope.toggleDelete=function(){
+        $scope.shouldshow=!$scope.shouldshow;
+    };
+    $scope.deleteFavorite=function(index){
+        favoriteFactory.deleteFromFavorite(index);
+        $scope.shouldshow=false;
+    };
+    $scope.dishes=menuFactory.getDishes().query(
+               function(response){
+                   $scope.dishes=response;
+               },function(response){
+                   $scope.message='Error'+response.status+response.statusText;
+               });
+    
+}])
+.filter('favfilter',function(){
+    return function(dishes,favorite){
+        var out=[];
+        if(favorite.length==0)
+            return out;
+        for(var i=0;i<dishes.length;i++){
+            for(var j=0;j<favorite.length;j++){
+                if(favorite[j].id==dishes[i].id)
+                    out.push(dishes[i]);
+            }
+        }
+        return out;
+    }
+})
 ;

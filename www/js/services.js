@@ -42,5 +42,26 @@ angular.module('firstApp.services',['ngResource'])
             return $resource(baseURL+"feedback/:id");
     
         }])
+        .factory('favoriteFactory',['$resource','baseURL',function($resource,baseURL){
+            var favFac={};
+            var favorite=[];
+            favFac.addToFavorite=function(index){
+                for(var i=0;i<favorite.length;i++){
+                    if(favorite[i]==index)
+                        return;
+                }
+                favorite.push({id:index});
+            };
+            favFac.getAllFavorite=function(){
+                return favorite;
+            };
+            favFac.deleteFromFavorite=function(index){
+                for(var i=0;i<favorite.length;i++){
+                    if(favorite[i].id==index)
+                        favorite.splice(i,1);
+                }
+            };
+            return favFac;
+        }])
 
 ;
