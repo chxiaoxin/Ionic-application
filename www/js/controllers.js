@@ -224,22 +224,45 @@ angular.module('firstApp.controllers', ['ngResource'])
                    $scope.message='Error'+response.status+response.statusText;
                });
 }])
-.controller('FavoriteController',['$scope','baseURL','favoriteFactory','menuFactory','$ionicListDelegate',function($scope,baseURL,favoriteFactory,menuFactory,$ionicListDelegate){
+.controller('FavoriteController',['$scope','baseURL','favoriteFactory','menuFactory','$ionicListDelegate','$ionicPopup','$ionicLoading','$timeout',function($scope,baseURL,favoriteFactory,menuFactory,$ionicListDelegate,$ionicPopup,$ionicLoading,$timeout){
     $scope.baseURL=baseURL;
     $scope.shouldshow=false;
     $scope.favorite=favoriteFactory.getAllFavorite();
+    $ionicLoading.show({
+        template:'<ion-spinner></ion-spinner>Loading...'
+    });
     $scope.toggleDelete=function(){
         $scope.shouldshow=!$scope.shouldshow;
     };
     $scope.deleteFavorite=function(index){
-        favoriteFactory.deleteFromFavorite(index);
+        var confirmDelete=$ionicPopup.confirm({
+            title:'Confirm deletetion',
+            template:'Are you sure to delete?'
+        })
+        
+        confirmDelete.then(function(res){
+            if(res){
+                console.log('Proceed deletetion');
+                favoriteFactory.deleteFromFavorite(index);
+            }else{
+                console.log('Cancel Deletion');
+            }
+        })
+        
+       
         $scope.shouldshow=false;
     };
     $scope.dishes=menuFactory.getDishes().query(
                function(response){
                    $scope.dishes=response;
+                   $timeout(function(){
+            $ionicLoading.hide();
+        },1000);
                },function(response){
                    $scope.message='Error'+response.status+response.statusText;
+                   $timeout(function(){
+                   $ionicLoading.hide();
+        },1000);
                });
     
 }])
