@@ -58,6 +58,7 @@ angular.module('firstApp.controllers', ['ngResource'])
      $timeout(function() {
       $scope.closeReserve();
     }, 1000);
+    
 })
 .controller("MenuController",['$scope','menuFactory','baseURL','favoriteFactory','$ionicListDelegate',function($scope,menuFactory,baseURL,favoriteFactory,$ionicListDelegate){
            $scope.baseURL=baseURL;
@@ -131,7 +132,7 @@ angular.module('firstApp.controllers', ['ngResource'])
                                   };
 }])
 
-.controller('dishDetailController',['$scope','menuFactory','$stateParams','baseURL',function($scope,menuFactory,$stateParams,baseURL){
+.controller('dishDetailController',['$scope','menuFactory','$stateParams','baseURL','$ionicPopover','favoriteFactory','$ionicModal', '$timeout',function($scope,menuFactory,$stateParams,baseURL,$ionicPopover,favoriteFactory,$ionicModal, $timeout){
             $scope.baseURL=baseURL;
             $scope.test={};
             $scope.criteria;
@@ -148,7 +149,65 @@ angular.module('firstApp.controllers', ['ngResource'])
                 console.log($scope.test.val);
                 $scope.criteria=$scope.test.val;
             };
-        }])
+            $ionicPopover.fromTemplateUrl('../templates/popover.html',{scope:$scope}).then(function(popover){
+                $scope.popover=popover;
+            });
+            $scope.popOver=function($event){
+                 $scope.popover.show($event);
+            };
+            $scope.add=function(){
+                 favoriteFactory.addToFavorite($scope.dish.id);
+                 $scope.popover.hide();
+            };
+            $scope.closePopover=function(){
+                $scope.popover.hide();
+            }
+            $ionicModal.fromTemplateUrl('templates/comment.html',{scope:$scope}).then(function(modal){
+                        $scope.commentform=modal;
+                    });
+             $scope.comment=function(){
+                 $scope.closePopover();
+                 $scope.commentform.show();
+             }
+             $scope.closeComment=function(){
+                        $scope.commentform.hide();
+                    };
+            $timeout(function(){
+                        $scope.closeComment();
+                    },1000);
+            $scope.formval={
+                author:'',
+                rating:'',
+                comment:'',
+                date:''
+            };
+            $scope.commentSubmit=function(){
+                if($scope.formval.rating==''){
+                    console.log('incorrect');
+                }else{
+                    var currentDate=new Date();
+                    var year=currentDate.getFullYear();
+                    var month=currentDate.getMonth()+1;
+                    var date=currentDate.getDate();
+                    var hour=currentDate.getHours();
+                    var minute=currentDate.getMinutes();
+                    var sec=currentDate.getSeconds();
+                    var milsec=currentDate.getMilliseconds();
+                    $scope.formval.date=year+'-'+month+'-'+date+'T'+hour+':'+minute+':'+sec+'.'+milsec+'Z';
+                    $scope.dish.comments.push($scope.formval);
+                    menuFactory.getDishes().update({id:$scope.dish.id},$scope.dish);
+                    $scope.invalidcheck=false;
+                    $scope.formval={
+                author:'',
+                rating:'',
+                comment:'',
+                date:''
+            };
+                    console.log($scope.formval);
+                }
+            };
+    
+}])
 .controller('FormController',['$scope','menuFactory',function($scope,menuFactory){
     $scope.formval={
         author:'',

@@ -85,7 +85,7 @@ angular.module('firstApp', ['ionic', 'firstApp.controllers','firstApp.services']
         controller: 'dishDetailController'
       }
     }
-  });
+  })
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/menu');
 });
