@@ -44,5 +44,21 @@ angular.module('firstApp.services',['ngResource'])
             };
             return favFac;
         }])
+        .factory('$localStorage',['$window',function($window){
+            return {
+                store:function(key,value){
+                    $window.localStorage[key]=value;
+                },
+                get:function(key,defaultvalue){
+                    return $window.localStorage[key]||defaulvalue;
+                },
+                storeObj:function(key,value){
+                    $window.localStorage[key]=JSON.stringify(value);
+                },
+                getObj:function(key,defaultvalue){
+                    return  JSON.parse($window.localStorage[key]||defaultvalue);
+                }
+            }
+        }])
 
 ;
