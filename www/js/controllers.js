@@ -67,13 +67,12 @@ angular.module('firstApp.controllers', ['ngResource'])
            $scope.setTab=1;
            $scope.showMenu=false;
            $scope.message='loading...';
-           $scope.dishes=menuFactory.getDishes().query(
-               function(response){
-                   $scope.dishes=response;
-                   $scope.showMenu=true;
-               },function(response){
-                   $scope.message='Error'+response.status+response.statusText;
-               });
+           $scope.dishes=menuFactory.query(
+           function(response){
+               $scope.dishes=response;
+           },function(response){
+               $scope.message=response.status;
+           });     
             $scope.select=function(setTab){
                 $scope.setTab=setTab;
                 switch(setTab){
@@ -132,19 +131,13 @@ angular.module('firstApp.controllers', ['ngResource'])
                                   };
 }])
 
-.controller('dishDetailController',['$scope','menuFactory','$stateParams','baseURL','$ionicPopover','favoriteFactory','$ionicModal', '$timeout',function($scope,menuFactory,$stateParams,baseURL,$ionicPopover,favoriteFactory,$ionicModal, $timeout){
+.controller('dishDetailController',['$scope','menuFactory','$stateParams','baseURL','$ionicPopover','favoriteFactory','$ionicModal', '$timeout','dish',function($scope,menuFactory,$stateParams,baseURL,$ionicPopover,favoriteFactory,$ionicModal, $timeout,dish){
             $scope.baseURL=baseURL;
             $scope.test={};
             $scope.criteria;
             $scope.showDish=false;
             $scope.message='Loading...';
-            $scope.dish=menuFactory.getDishes().get({id:parseInt($stateParams.id,10)})
-            .$promise.then(function(response){
-                   $scope.dish=response;
-                   $scope.showDish=true;
-               },function(response){
-                   $scope.message='Error'+response.status+response.statusText;
-               });
+            $scope.dish=dish;
             $scope.passVal=function(){
                 console.log($scope.test.val);
                 $scope.criteria=$scope.test.val;
@@ -195,7 +188,7 @@ angular.module('firstApp.controllers', ['ngResource'])
                     var milsec=currentDate.getMilliseconds();
                     $scope.formval.date=year+'-'+month+'-'+date+'T'+hour+':'+minute+':'+sec+'.'+milsec+'Z';
                     $scope.dish.comments.push($scope.formval);
-                    menuFactory.getDishes().update({id:$scope.dish.id},$scope.dish);
+                    menuFactory.update({id:$scope.dish.id},$scope.dish);
                     $scope.invalidcheck=false;
                     $scope.formval={
                 author:'',
@@ -232,7 +225,7 @@ angular.module('firstApp.controllers', ['ngResource'])
             var milsec=currentDate.getMilliseconds();
             $scope.formval.date=year+'-'+month+'-'+date+'T'+hour+':'+minute+':'+sec+'.'+milsec+'Z';
             $scope.dish.comments.push($scope.formval);
-            menuFactory.getdishes().update({id:$scope.dish.id},$scope.dish);
+            menuFactory.update({id:$scope.dish.id},$scope.dish);
             $scope.invalidcheck=false;
             $scope.formval={
         author:'',
@@ -245,11 +238,11 @@ angular.module('firstApp.controllers', ['ngResource'])
         }
     };
 }])
-.controller('IndexController',['baseURL','$scope','menuFactory','corporateFactory',function(baseURL,$scope,menuFactory,corporateFactory){
+.controller('IndexController',['baseURL','$scope','menuFactory','corporateFactory','promotionFactory',function(baseURL,$scope,menuFactory,corporateFactory,promotionFactory){
     $scope.baseURL=baseURL;
     $scope.showIndex=false;
     $scope.message='Loading...'
-    $scope.dish_outline=menuFactory.getDishes().get({id:1}).$promise.then(
+    $scope.dish_outline=menuFactory.get({id:1}).$promise.then(
         function(response){
                    $scope.dish_outline=response;
                    $scope.showIndex=true;
@@ -257,14 +250,7 @@ angular.module('firstApp.controllers', ['ngResource'])
         function(response){
                    $scope.message='Error'+response.status+response.statusText;
                });
-    $scope.promotion=menuFactory.getPromotion().get({id:0}).$promise.then(
-        function(response){
-                   $scope.promotion=response;
-                   $scope.showIndex=true;
-               },
-        function(response){
-                   $scope.message='Error'+response.status+response.statusText;
-});
+    $scope.promotion=promotionFactory.get({id:0});
     $scope.leadership=corporateFactory.get({id:0}).$promise.then(
         function(response){
                    $scope.leadership=response;
@@ -283,13 +269,11 @@ angular.module('firstApp.controllers', ['ngResource'])
                    $scope.message='Error'+response.status+response.statusText;
                });
 }])
-.controller('FavoriteController',['$scope','baseURL','favoriteFactory','menuFactory','$ionicListDelegate','$ionicPopup','$ionicLoading','$timeout',function($scope,baseURL,favoriteFactory,menuFactory,$ionicListDelegate,$ionicPopup,$ionicLoading,$timeout){
+.controller('FavoriteController',['$scope','baseURL','favoriteFactory','menuFactory','$ionicListDelegate','$ionicPopup','$ionicLoading','$timeout','favorites','dishes',function($scope,baseURL,favoriteFactory,menuFactory,$ionicListDelegate,$ionicPopup,$ionicLoading,$timeout,favorites,dishes){
     $scope.baseURL=baseURL;
     $scope.shouldshow=false;
-    $scope.favorite=favoriteFactory.getAllFavorite();
-    $ionicLoading.show({
-        template:'<ion-spinner></ion-spinner>Loading...'
-    });
+    $scope.favorites=favorites;
+    $scope.dishes=dishes;
     $scope.toggleDelete=function(){
         $scope.shouldshow=!$scope.shouldshow;
     };
@@ -311,18 +295,6 @@ angular.module('firstApp.controllers', ['ngResource'])
        
         $scope.shouldshow=false;
     };
-    $scope.dishes=menuFactory.getDishes().query(
-               function(response){
-                   $scope.dishes=response;
-                   $timeout(function(){
-            $ionicLoading.hide();
-        },1000);
-               },function(response){
-                   $scope.message='Error'+response.status+response.statusText;
-                   $timeout(function(){
-                   $ionicLoading.hide();
-        },1000);
-               });
     
 }])
 .filter('favfilter',function(){

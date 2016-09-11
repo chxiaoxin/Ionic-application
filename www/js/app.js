@@ -73,7 +73,15 @@ angular.module('firstApp', ['ionic', 'firstApp.controllers','firstApp.services']
       views:{
           'menuContent':{
               templateUrl:'templates/favorite.html',
-              controller:'FavoriteController'
+              controller:'FavoriteController',
+              resolve:{
+                favorites:['favoriteFactory',function(favoriteFactory){
+                        return favoriteFactory.getAllFavorite();
+                        }],
+                dishes:['menuFactory',function(menuFactory){
+                        return menuFactory.query();
+                        }]
+          }
           }
       }
   })
@@ -82,7 +90,12 @@ angular.module('firstApp', ['ionic', 'firstApp.controllers','firstApp.services']
     views: {
       'menuContent': {
         templateUrl: 'templates/dishdetails.html',
-        controller: 'dishDetailController'
+        controller: 'dishDetailController',
+        resolve:{
+            dish:['menuFactory','$stateParams',function(menuFactory,$stateParams){
+                return menuFactory.get({id:parseInt($stateParams.id,10)});
+            }]
+        }
       }
     }
   })
